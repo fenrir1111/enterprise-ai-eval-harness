@@ -2,7 +2,7 @@
 > Enterprise AI Evaluation Harness｜面向 B 端交付的 LLM/RAG/Text2SQL/Agent 统一评测基座
 
 > 属于【enterprise-ai-stack】B端私有化 AI 交付底座合集
-> 👉 总入口：https://github.com/你的用户名/enterprise-ai-stack
+> 👉 总入口：https://github.com/fenrir1111/enterprise-ai-stack
 
 ## 一句话简介
 解决 B 端 AI 交付痛点：**缺少标准化评测流程**，上线后效果漂移、幻觉无法量化、验收无统一指标。
