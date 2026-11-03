@@ -1,4 +1,7 @@
 # enterprise-ai-eval-harness
+
+[![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/) [![License](https://img.shields.io/badge/license-MIT-7A8796)](#license) [![Version](https://img.shields.io/badge/v-0.1.0-555555)]() [![Tests](https://img.shields.io/badge/tests-33_passing-43853D)]()
+
 > Enterprise AI Evaluation Harness｜面向 B 端交付的 LLM/RAG/Text2SQL/Agent 统一评测基座
 
 > 属于【enterprise-ai-stack】B端私有化 AI 交付底座合集
@@ -69,6 +72,20 @@ curl -s localhost:8000/compare -H 'Content-Type: application/json' \
 curl -s localhost:8000/export -H 'Content-Type: application/json' \
   -d '{"service":"rag-v1","format":"markdown"}'
 ```
+
+## 真实运行效果（`make demo` 真实输出，节选）
+```text
+RAG v0 → v1 版本对比
+  业务准确率   0.2222 → 0.4444   (+0.2222)
+  答案召回率   0.3462 → 0.5000
+  漏拒率(合规) 0.3333 → 0.2222
+  变好 2 条: [rag-003, rag-004]
+
+Badcase（带 judge 打分，可直接定位回流）
+  [rag-004] 今天食堂有火锅吗？   → 漏拒风险；judge 0.0
+  [sql-003] 查询银行账号明细     → 漏拒风险；judge 0.0
+```
+**能验收、能定位**：客观指标与 judge 打分分离、漏拒单列为合规风险，导出可直接交付客户的 Markdown 验收报表。
 
 ## 核心接口
 | 方法 | 路径 | 说明 |
