@@ -1,0 +1,31 @@
+services:
+  eval-harness:
+    build: .
+    container_name: enterprise-ai-eval-harness
+    ports:
+      - "8000:8000"
+    environment:
+      - DATASET_PATH=./data/sample_eval.json
+      - BADCASE_PATH=./data/badcase.jsonl
+      - REPORT_DIR=./data/reports
+      # LLM-as-judge 可选：不配置则走确定性打分（离线可跑）
+      - JUDGE_ENABLED=false
+      - JUDGE_MODEL=gpt-4o-mini
+      - JUDGE_API_BASE=
+      - JUDGE_API_KEY=
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://127.0.0.1:8000/health')"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    restart: unless-stopped
+
+  # 可选：对接 LiteLLM 网关后，把 JUDGE_ENABLED 置 true、JUDGE_API_BASE 指向该网关
+  # lite-llm:
+  #   image: ghcr.io/berriai/litellm:main-latest
+  #   ports:
+  #     - "4000:4000"
+  #   environment:
+  #     - LITELLM_MASTER_KEY=sk-eval

@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.venv/
+.pytest_cache/
+.pytest-tmp/
+
+# 运行产物（badcase 归档、报表）
+data/badcase.jsonl
+data/reports/
+
+# 本地环境
+.env
