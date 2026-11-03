@@ -5,15 +5,27 @@
 
 from __future__ import annotations
 
+import sys
+from pathlib import Path
+
 import streamlit as st
 
-from .config import get_settings
-from .dataset import load_dataset
-from .judge.deterministic import DeterministicJudge
-from .report.export import export_compare_markdown, export_markdown
-from .runner.compare import compare_runs
-from .runner.evaluator import Evaluator
-from .runner.presets import build_services
+# Streamlit 以「独立脚本」方式执行本文件（无 __package__），相对导入会直接 ImportError。
+# 这里把 src/ 加入 sys.path 并改用绝对导入，保证「clone 即跑」和「已安装」两种场景都能启动。
+_SRC = Path(__file__).resolve().parents[1]
+if str(_SRC) not in sys.path:
+    sys.path.insert(0, str(_SRC))
+
+from ai_eval_harness.config import get_settings  # noqa: E402
+from ai_eval_harness.dataset import load_dataset  # noqa: E402
+from ai_eval_harness.judge.deterministic import DeterministicJudge  # noqa: E402
+from ai_eval_harness.report.export import (  # noqa: E402
+    export_compare_markdown,
+    export_markdown,
+)
+from ai_eval_harness.runner.compare import compare_runs  # noqa: E402
+from ai_eval_harness.runner.evaluator import Evaluator  # noqa: E402
+from ai_eval_harness.runner.presets import build_services  # noqa: E402
 
 
 @st.cache_resource

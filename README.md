@@ -87,6 +87,43 @@ Badcase（带 judge 打分，可直接定位回流）
 ```
 **能验收、能定位**：客观指标与 judge 打分分离、漏拒单列为合规风险，导出可直接交付客户的 Markdown 验收报表。
 
+## 系统实拍（真实运行截图）
+
+以下截图均为**本仓库真实运行**产出（`make ui` 起控制台 + `make demo` 跑全链路），未经修饰。
+
+### 1. 跑评测 · 指标实时出
+
+选目标服务 `rag-v1`，点「开始评测」——业务准确率 44.44%、拒答率 11.11%、漏拒率(合规风险) 22.22% 一次跑出来：
+
+![跑评测与指标总览](docs/screenshots/eval-harness-01-run.png)
+
+### 2. 版本对比 · v0 → v1 差在哪
+
+客观指标 diff + judge 打分分离对比，**变好/变差逐条列出**，可直接判断能不能上线：
+
+![版本对比](docs/screenshots/eval-harness-02-compare.png)
+
+### 3. Badcase & 报表 · 可直接交付客户
+
+badcase 带 judge 分数与风险标记（漏拒），一键导出 Markdown 验收报表：
+
+![Badcase 与验收报表](docs/screenshots/eval-harness-03-badcase.png)
+
+### 4. `make demo` 终端输出
+
+```text
+【RAG v0 评测指标】
+            accuracy: 0.2222
+  missed_refusal_rate: 0.3333
+        answer_recall: 0.3462
+【RAG v1 评测指标】
+            accuracy: 0.4444
+  missed_refusal_rate: 0.2222
+        answer_recall: 0.5
+```
+
+![make demo 终端输出](docs/screenshots/enterprise-ai-eval-harness-demo-terminal.png)
+
 ## 核心接口
 | 方法 | 路径 | 说明 |
 |---|---|---|
