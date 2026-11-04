@@ -52,7 +52,9 @@ CI 会自动跑上面两步，再加 FastAPI `/health` 与 Streamlit 控制台�
 - **行宽 100 以内**，命名 `snake_case`，公开 API 用 docstring 说明「为什么」
 - **相对导入用绝对导入**：`streamlit_app.py` 会被 Streamlit 当独立脚本执行，
   相对导入会直接 `ImportError` —— 统一写成 `from ai_eval_harness.xxx import ...`。
-  `tests/test_streamlit_app.py` 会在 CI 里守住这条。
+  **包括 `if` 分支 / 函数里的延迟导入** —— 那类 bug 首屏正常，只有用户点到该分支才炸，
+  AppTest 初始渲染和 HTTP 200 都看不出来。`tests/test_streamlit_app.py` 用 AST 全量扫描 +
+  点击主按钮的交互冒烟，在 CI 里守住这条。
 - **新指标必须带单元测试**：至少包含「完美预测」与「完全失败」两个边界用例
 - **评测集变更要说明标注依据**：新增/修改样本请在 PR 描述里写清标注口径
 

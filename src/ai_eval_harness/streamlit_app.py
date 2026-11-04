@@ -18,6 +18,7 @@ if str(_SRC) not in sys.path:
 
 from ai_eval_harness.config import get_settings  # noqa: E402
 from ai_eval_harness.dataset import load_dataset  # noqa: E402
+from ai_eval_harness.dataset.models import EvalDataset  # noqa: E402
 from ai_eval_harness.judge.deterministic import DeterministicJudge  # noqa: E402
 from ai_eval_harness.report.export import (  # noqa: E402
     export_compare_markdown,
@@ -52,11 +53,9 @@ with tab_run:
         service = st.selectbox("目标服务", list(h["services"].keys()), index=1)
         scenarios = st.multiselect("场景（缺省=全部）", ["rag", "sql", "agent"])
         go = st.button("▶ 开始评测", type="primary")
-    if go and st.session_state.get("_run_svc") != service:
+    if go:
         ds = h["dataset"]
         if scenarios:
-            from .dataset.models import EvalDataset
-
             ds = EvalDataset(ds.name, ds.version, [c for c in ds.cases if c.scenario in scenarios])
         run = Evaluator(judge=h["judge"]).run(ds, h["services"][service])
         st.session_state["run"] = run

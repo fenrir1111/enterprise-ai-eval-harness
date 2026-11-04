@@ -1,6 +1,6 @@
 # enterprise-ai-eval-harness
 
-[![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/) [![License](https://img.shields.io/badge/license-MIT-7A8796)](#license) [![Version](https://img.shields.io/badge/v-0.1.0-555555)]() [![Tests](https://img.shields.io/badge/tests-35_passing-43853D)]() [![CI](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/) [![License](https://img.shields.io/badge/license-MIT-7A8796)](#license) [![Version](https://img.shields.io/badge/v-0.1.0-555555)]() [![Tests](https://img.shields.io/badge/tests-38_passing-43853D)]() [![CI](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml)
 
 > Enterprise AI Evaluation Harness｜面向 B 端交付的 LLM/RAG/Text2SQL/Agent 统一评测基座
 
@@ -175,6 +175,14 @@ badcase 带 judge 分数与风险标记（漏拒），一键导出 Markdown 验�
 > 其中 `tests/test_streamlit_app.py` 用 Streamlit 官方 `AppTest` **真正执行一遍页面脚本**：
 > Streamlit 是把 `streamlit_app.py` 当独立脚本跑的（没有 `__package__`），
 > 一旦脚本里用了相对导入就会直接 `ImportError`，但页面仍返回 HTTP 200 —— 只有真跑一遍才发现得了。
+>
+> 再往里一层：`if` 分支 / 函数里的**延迟相对导入**更隐蔽 —— 首屏正常，
+> 只有用户点到那个分支才 `ImportError`，AppTest 初始渲染和 HTTP 200 一样抓不到。
+> 因此 `tests/test_streamlit_app.py` 还有两道防线：
+> `test_no_relative_imports_in_streamlit_app` 用 AST 扫全文件（含分支内），
+> `test_primary_action_runs_without_exception` 用 AppTest **真点一次主按钮**，覆盖初始渲染走不到的交互分支。
+>
+> 另有 `test_scenario_filter_then_run_without_exception` 精确复现「勾选场景 → 开始评测」路径 —— 这正是当年藏住延迟相对导入的那个分支。
 
 本地复现：
 
