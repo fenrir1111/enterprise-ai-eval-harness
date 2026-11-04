@@ -13,6 +13,12 @@
 
 ![enterprise-ai-eval-harness 评测控制台 · 真实运行](docs/screenshots/eval-harness-01-run.png)
 
+## 🎬 一条命令跑通（真实终端录制）
+
+`make demo` 一条命令跑通全链路（**真实终端录制**，非模拟）：跑评测 → 出指标 → 版本对比 → 归档 badcase → 生成验收报表：
+
+![enterprise-ai-eval-harness 一条命令跑通 · 真实终端录制](docs/quickstart.gif)
+
 ## 一句话简介
 解决 B 端 AI 交付痛点：**缺少标准化评测流程**，上线后效果漂移、幻觉无法量化、验收无统一指标。
 面向 FDE、AI 交付、数据产品团队，开箱即用的自动评测框架：支持 **LLM-as-judge**、批量对比模型版本、
@@ -89,6 +95,9 @@ curl -s localhost:8000/export -H 'Content-Type: application/json' \
 ```
 
 ## 真实运行效果（`make demo` 真实输出，节选）
+
+> 想看**动画版**（真实终端逐行录制）见文首「🎬 一条命令跑通」。
+
 ```text
 RAG v0 → v1 版本对比
   业务准确率   0.2222 → 0.4444   (+0.2222)
