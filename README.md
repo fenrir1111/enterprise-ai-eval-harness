@@ -34,10 +34,19 @@
 7. **Streamlit 可视化后台**，无需写代码即可跑评测、看报表。
 
 ## 架构简图
+
+![enterprise-ai-eval-harness 架构图](docs/enterprise-ai-eval-harness-architecture.png)
+
+<details>
+<summary>文本版架构简图</summary>
+
 ```
 评测数据集 → 任务分发（按场景过滤） → 目标服务适配器（RAG/Text2SQL/Agent）
    → 确定性判分 + 可选 LLM-as-judge → 指标聚合 & badcase 归档 → 报表输出 / 版本对比
 ```
+
+</details>
+
 
 ## 快速启动
 ### 方式一：uv（推荐，本地）
@@ -190,6 +199,7 @@ AI 交付 FDE、RAG 产品、Text2SQL 落地团队、大模型中台工程师。
 
 ## 参与共建
 欢迎提交 Issue（反馈 bug、补充行业评测样例）、PR（新增指标、接入更多目标服务）。有效贡献在 README 致谢栏署名。
+详细流程见 [CONTRIBUTING.md](CONTRIBUTING.md)。
 
 ## License
 MIT License，可自由使用、二次修改、商用；当前为 v0 版本，生产使用请自行评估风险。
