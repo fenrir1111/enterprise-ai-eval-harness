@@ -1,6 +1,6 @@
 # enterprise-ai-eval-harness
 
-[![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/) [![License](https://img.shields.io/badge/license-MIT-7A8796)](#license) [![Version](https://img.shields.io/badge/v-0.1.0-555555)]() [![Tests](https://img.shields.io/badge/tests-33_passing-43853D)]()
+[![Python](https://img.shields.io/badge/python-%E2%89%A53.10-3776AB)](https://www.python.org/) [![License](https://img.shields.io/badge/license-MIT-7A8796)](#license) [![Version](https://img.shields.io/badge/v-0.1.0-555555)]() [![Tests](https://img.shields.io/badge/tests-35_passing-43853D)]() [![CI](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml/badge.svg)](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml)
 
 > Enterprise AI Evaluation Harness｜面向 B 端交付的 LLM/RAG/Text2SQL/Agent 统一评测基座
 
@@ -142,6 +142,28 @@ badcase 带 judge 分数与风险标记（漏拒），一键导出 Markdown 验�
 ## 接入你的真实服务
 把 RAG/Text2SQL/Agent 封装成实现 `TargetService.answer(question) -> ServiceResult` 的适配器即可，
 示例见 [`examples/adapter_example.py`](examples/adapter_example.py)（封装 semantic-sql-guard 的 `/ask` 接口）。
+
+## CI 与质量门禁
+
+每次 push / PR 自动跑 [GitHub Actions](https://github.com/fenrir1111/enterprise-ai-eval-harness/actions/workflows/ci.yml)（Python 3.10 + 3.12 双版本矩阵）：
+
+| 环节 | 检查内容 |
+|---|---|
+| 单元测试 | `pytest` 全量（含 Streamlit 控制台冒烟，捕获脚本被当独立模块执行时的 ImportError） |
+| demo 冒烟 | `python -m ai_eval_harness.demo` 全链路跑通，退出码必须为 0 |
+| FastAPI 冒烟 | 起 `uvicorn` 并请求 `/health`，30s 内未就绪即失败 |
+| Streamlit 冒烟 | 起控制台并请求 `/_stcore/health`，30s 内未就绪即失败 |
+
+> 其中 `tests/test_streamlit_app.py` 用 Streamlit 官方 `AppTest` **真正执行一遍页面脚本**：
+> Streamlit 是把 `streamlit_app.py` 当独立脚本跑的（没有 `__package__`），
+> 一旦脚本里用了相对导入就会直接 `ImportError`，但页面仍返回 HTTP 200 —— 只有真跑一遍才发现得了。
+
+本地复现：
+
+```bash
+make test    # 单元测试 + 控制台冒烟
+make demo    # 全链路 demo
+```
 
 ## 设计原则
 - **确定性优先**：默认离线可跑、可复现、可单测；LLM 裁判为可选增强，失败自动回退。
